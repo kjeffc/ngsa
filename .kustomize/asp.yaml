@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aspnet-sample-namespace-2
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngsa-app
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ngsa-app
+  template:
+    metadata:
+      labels:
+        app: ngsa-app
+    spec:
+      containers:
+      - image: mcr.microsoft.com/dotnet/core/samples:aspnetapp
+        name: app
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngsa-app
+  namespace: default
+spec:
+  selector:
+    app: ngsa-app
+  ports:
+  - port: 80 # change this port to 82 if you want to access the service http://ngsa-app:82
+    targetPort: 80
